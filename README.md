@@ -41,9 +41,6 @@ To run the project locally:
 
    Rename `.env.example` to `.env` and fill in the required values.
 
-   ⚠️ *For security reasons, credentials are not provided here.  
-   If you need them to check the local deployment, feel free to email me at [rozhkovj@gmail.com](mailto:rozhkovj@gmail.com).*
-
 3. **Run the application using Docker Compose**
 
    From the root directory:
