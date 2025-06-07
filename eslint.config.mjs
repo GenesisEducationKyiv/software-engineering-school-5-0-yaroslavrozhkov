@@ -14,9 +14,6 @@ export default tseslint.config(
     ignores: ['eslint.config.mjs', 'public/**'],
   },
   {
-      ignores: ['eslint.config.mjs', 'public/**'],
-  },
-  {
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-floating-promises': 'warn',
