@@ -10,8 +10,10 @@ export default tseslint.config(
       parserOptions: {
         project: './tsconfig.json',
       },
-    },
-    ignores: ['eslint.config.mjs', 'public/**'],
+    }
+  },
+  {
+      ignores: ['eslint.config.mjs', 'public/**'],
   },
   {
     rules: {
