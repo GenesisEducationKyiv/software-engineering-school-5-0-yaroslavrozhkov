@@ -1,19 +1,18 @@
 import { Request, Response } from "express";
 import { IWeatherService } from "../interfaces/weather-service.interface";
-
-type SubscribeRequestBody = {
-  email: string;
-  city: string;
-  frequency: string;
-}
-type SubscribeResponse = { message: string };
+import { SubscribeResponse, SubscribeRequestBody} from "../models/types";
 
 export class WeatherController {
   constructor(private weatherService: IWeatherService) {}
 
   getWeather = async (req: Request, res: Response) => {
     try {
-      const city = req.query.city as string;
+      const { city } = req.query;
+
+      if (typeof city !== "string") {
+        return res.status(400).json({ error: "City must be a string" });
+      }
+      
       const weather = await this.weatherService.getWeather(city);
       res.json(weather);
     } catch (err: unknown) {
