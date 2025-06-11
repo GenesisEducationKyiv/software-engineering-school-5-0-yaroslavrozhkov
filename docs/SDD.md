@@ -117,13 +117,14 @@ Uses standard HTTP response codes.
 
 ## 5. High-Level Architecture
 
-            +------+
-            | User |
-            +--+---+
-               |
-       +-------+--------+
-       |                |
-       v                v
+```text
+        +------+
+        | User |
+        +--+---+
+           |
+   +-------+--------+
+   |                |
+   v                v
 +------------+   +-------------+
 |  Web page  |   |   Web API   |
 +------------+   +-------------+
