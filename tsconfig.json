@@ -7,5 +7,5 @@
       "esModuleInterop": true,
       "strict": true
     },
-    "include": ["app.ts", "src/**/*"]
+    "include": ["app.ts", "src/**/*", "subscription-job.ts"]
   }
