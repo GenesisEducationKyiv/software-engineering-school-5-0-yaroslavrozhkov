@@ -2,6 +2,16 @@ import axios from "axios";
 import { IWeatherApiClient } from "../interfaces/weather-api-client.interface";
 import { Weather } from "../models/types";
 
+interface WeatherApiResponse {
+  current: {
+    temp_c: number;
+    humidity: number;
+    condition: {
+      text: string;
+    };
+  };
+}
+
 export class WeatherApiClient implements IWeatherApiClient {
   async fetchWeather(city: string): Promise<Weather> {
 
@@ -9,7 +19,7 @@ export class WeatherApiClient implements IWeatherApiClient {
 
     const url = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${encodeURIComponent(city)}&days=0&aqi=no&alerts=no`;
 
-    const response = await axios.get(url);
+    const response = await axios.get<WeatherApiResponse>(url);
     const data = response.data;
 
     return {
