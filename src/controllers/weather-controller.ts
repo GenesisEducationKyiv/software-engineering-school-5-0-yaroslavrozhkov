@@ -1,22 +1,22 @@
-import { Request, Response } from "express";
+import { Request, Response, RequestHandler } from "express";
 import { IWeatherService } from "../interfaces/weather-service.interface";
 import { SubscribeResponse, SubscribeRequestBody} from "../models/types";
+import { z } from "zod";
 
 export class WeatherController {
   constructor(private weatherService: IWeatherService) {}
 
-  getWeather = async (req: Request, res: Response) => {
+  getWeather: RequestHandler = async (req, res) => {
     try {
-      const { city } = req.query;
-
-      if (typeof city !== "string") {
-        return res.status(400).json({ error: "City must be a string" });
-      }
-      
+      const city = z.string().parse(req.query.city);
       const weather = await this.weatherService.getWeather(city);
       res.json(weather);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Unknown error";
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ error: "Invalid city" });
+        return;
+      }
+      const message = error instanceof Error ? error.message : "Unknown error";
       res.status(400).json({ error: message });
     }
   };
