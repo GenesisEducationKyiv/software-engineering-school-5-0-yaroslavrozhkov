@@ -3,8 +3,6 @@ import { IWeatherApiClient } from "../interfaces/weather-api-client.interface";
 import { ISubscriptionRepository } from "../interfaces/subscription-repository.interface";
 import { Weather } from "../models/types";
 
-import { sendEmail } from "../utils/email-service-util";
-
 import { v4 as uuidv4 } from "uuid";
 import { IEmailService } from "../interfaces/email-service.interface";
 
