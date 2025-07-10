@@ -1,27 +1,21 @@
-import axios from "axios";
 import { IWeatherApiClient } from "../interfaces/weather-api-client.interface";
-import { Weather } from "../models/types";
-
-interface WeatherApiResponse {
-  current: {
-    temp_c: number;
-    humidity: number;
-    condition: {
-      text: string;
-    };
-  };
-}
+import { Weather, WeatherApiResponse } from "../models/types";
+import { IHttpClient } from "../interfaces/http-client.interface";
+import { WeatherApiUrlBuilder } from "./helper/weather-api-url-builder";
 
 export class WeatherApiClient implements IWeatherApiClient {
+  constructor(
+    private readonly urlBuilder: WeatherApiUrlBuilder,
+    private readonly httpClient: IHttpClient
+  ) {}
+
   async fetchWeather(city: string): Promise<Weather> {
+    const url = this.urlBuilder.build(city);
+    const response = await this.httpClient.get<WeatherApiResponse>(url);
+    return this.mapToDomain(response.data);
+  }
 
-    const API_KEY = process.env.WEATHER_API_KEY;
-
-    const url = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${encodeURIComponent(city)}&days=0&aqi=no&alerts=no`;
-
-    const response = await axios.get<WeatherApiResponse>(url);
-    const data = response.data;
-
+  private mapToDomain(data: WeatherApiResponse): Weather {
     return {
       temperature: data.current.temp_c,
       humidity: data.current.humidity,
