@@ -11,7 +11,6 @@ async function processSubscriptions() {
   const apiClient = new WeatherApiClient();
   const subscriptionRepo = new PrismaSubscriptionRepository();
   const weatherService = new WeatherService(apiClient, subscriptionRepo);
-  const serviceUrl = process.env.SERVICE_URL;
 
   const subscriptions = await prisma.subscription.findMany({
     where: { confirmed: true },
@@ -47,6 +46,12 @@ async function processSubscriptions() {
   }
 }
 
-processSubscriptions()
-  .catch(console.error)
-  .finally(() => prisma.$disconnect());
+await (async () => {
+  try {
+    await processSubscriptions();
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await prisma.$disconnect();
+  }
+})();

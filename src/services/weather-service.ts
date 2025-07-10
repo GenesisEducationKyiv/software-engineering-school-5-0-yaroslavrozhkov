@@ -34,7 +34,7 @@ export class WeatherService implements IWeatherService {
 
     try {
       await this.getWeather(city);
-    } catch (error) {
+    } catch {
       throw new Error(`Invalid city: "${city}". Weather data could not be retrieved.`);
     }
 

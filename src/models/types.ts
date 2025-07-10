@@ -10,3 +10,13 @@ export type Weather = {
     frequency: "hourly" | "daily";
     lastSentAt: Date;
   };
+
+  export type SubscribeRequestBody = {
+    email: string;
+    city: string;
+    frequency: string;
+  }
+
+  export type SubscribeResponse = { 
+    message: string 
+  };
