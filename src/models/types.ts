@@ -31,6 +31,16 @@ export type Weather = {
     };
   }
 
+  export interface OpenWeatherApiResponse {
+    main: {
+      temp: number;
+      humidity: number;
+    };
+    weather: Array<{
+      description: string;
+    }>;
+  }
+
   export interface StoredSubscription {
     id: number;
     email: string;
