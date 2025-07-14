@@ -14,17 +14,23 @@
   },
   "name": "weather-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "devDependencies": {
+    "@faker-js/faker": "^9.8.0",
     "@types/express": "^5.0.2",
+    "@types/jest": "^30.0.0",
     "@types/node": "^22.15.18",
     "@types/nodemailer": "^6.4.17",
+    "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
+    "jest": "^30.0.2",
     "nodemon": "^3.1.10",
     "prettier": "^3.5.3",
+    "supertest": "^7.1.1",
+    "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.33.1"
@@ -32,8 +38,10 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/app.js",
-    "dev": "nodemon app.ts",
-    "lint": "eslint . --ext .ts"
+    "dev": "nodemon index.ts",
+    "lint": "eslint . --ext .ts",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "keywords": [],
   "author": "",
