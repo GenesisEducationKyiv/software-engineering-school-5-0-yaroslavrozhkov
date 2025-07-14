@@ -21,6 +21,7 @@ describe("POST /api/subscribe", () => {
             humidity: 60,
             description: "Sunny",
           }),
+          setNext: jest.fn(),
         };
       
         mockSubscriptionRepo = {
