@@ -18,6 +18,7 @@ describe("GET /api/weather", () => {
           humidity: 60,
           description: "Sunny",
         }),
+        setNext: jest.fn(),
       };
 
     mockSubscriptionRepo = {
