@@ -16,6 +16,7 @@ describe("DELETE /api/unsubscribe/:token", () => {
   beforeAll(() => {
     mockWeatherApiClient = {
       fetchWeather: jest.fn(),
+      setNext: jest.fn(),
     };
 
     mockSubscriptionRepo = {

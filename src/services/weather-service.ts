@@ -5,6 +5,7 @@ import { Weather } from "../models/types";
 
 import { v4 as uuidv4 } from "uuid";
 import { IEmailService } from "../interfaces/email-service.interface";
+import { WeatherNotFoundError } from "../domain/errors";
 
 export class WeatherService implements IWeatherService {
   constructor(
@@ -16,7 +17,13 @@ export class WeatherService implements IWeatherService {
   async getWeather(city: string): Promise<Weather> {
     if (!city) throw new Error("City is required");
 
-    return this.weatherApiClient.fetchWeather(city);
+    const result = await this.weatherApiClient.fetchWeather(city);
+
+    if (!result) {
+      throw new WeatherNotFoundError(`Weather data not found for city: ${city}`);
+    }
+
+    return result;
   }
 
   async subscribe(email: string, city: string, frequency: string): Promise<void> {
