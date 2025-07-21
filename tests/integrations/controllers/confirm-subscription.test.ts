@@ -20,6 +20,7 @@ describe("GET /api/confirm/:token", () => {
         humidity: 60,
         description: "Sunny",
       }),
+      setNext: jest.fn(),
     };
 
     mockSubscriptionRepo = {
