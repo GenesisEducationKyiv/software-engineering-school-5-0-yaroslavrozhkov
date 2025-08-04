@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Subscription {
+  id        Int      @id @default(autoincrement())
+  email     String
+  city      String
+  frequency Int
+  confirmed Boolean  @default(false)
+  token     String   @unique
+  createdAt DateTime @default(now())
+  lastSentAt DateTime?
+}
