@@ -31,3 +31,23 @@ export type Weather = {
     createdAt: Date;
     lastSentAt: Date | null;
   }
+
+  export interface WeatherApiResponse {
+    current: {
+      temp_c: number;
+      humidity: number;
+      condition: {
+        text: string;
+      };
+    };
+  }
+
+  export interface OpenWeatherApiResponse {
+    main: {
+      temp: number;
+      humidity: number;
+    };
+    weather: Array<{
+      description: string;
+    }>;
+  }
