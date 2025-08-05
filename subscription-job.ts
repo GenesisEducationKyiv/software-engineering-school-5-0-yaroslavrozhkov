@@ -1,6 +1,6 @@
 import { AxiosHttpClient } from "../weather-api/src/infrastructure/common/axios-http-client";
 import { WeatherApiUrlBuilder } from "../weather-api/src/infrastructure/helper/weather-api-url-builder";
-import { WeatherApiClient } from "../weather-api/src/infrastructure/weather-api-client";
+import { WeatherApiClient } from "./src/infrastructure/weather-provider/weather-api-client";
 import { WeatherService } from "../weather-api/src/services/weather-service";
 import { PrismaSubscriptionRepository } from "../weather-api/src/infrastructure/prisma-subscription-repository";
 import { EmailService } from "../weather-api/src/services/email-service";
