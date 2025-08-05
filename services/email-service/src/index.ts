@@ -1,12 +1,12 @@
 import express from "express";
-import emailApi from "./src/api/email-api";
+import router from "./api/email-api";
 
 const app = express();
 app.use(express.json());
 
-const PORT = process.env.APP_PORT || 3002;
+const PORT = process.env.APP_PORT || 3001;
 
-app.use("/api", emailApi);
+app.use("/api", router);
 
 app.listen(PORT, () => {
   console.log(`Email service running on port ${PORT}`);

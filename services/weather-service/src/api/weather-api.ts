@@ -9,8 +9,8 @@ import { OpenWeatherApiUrlBuilder } from "../infrastructure/helper/open-weather-
 import { OpenWeatherClient } from "../infrastructure/weather-provider/open-weather-client";
 import { LoggingWeatherHandlerDecorator } from "../infrastructure/logging/logging-provider";
 import { fileLogger } from '../infrastructure/logging/file-logger';
-import router from "../../../../src/routes/api";
 import { WeatherController } from "../controllers/weaher-controllers";
+import express from "express";
 
 const weatherApiKey = process.env.WEATHER_API_KEY!;
 const openWeatherKey = process.env.OPENWEATHER_API_KEY!;
@@ -31,11 +31,12 @@ const loggedOpenWeatherHandler = new LoggingWeatherHandlerDecorator(openWeatherH
   
 loggedWeatherApiHandler.setNext(loggedOpenWeatherHandler);
 
-const subscriptionService = new HttpSubscriptionService("http://localhost:3000/api");
-const emailService = new HttpEmailService("http://localhost:3000/api");
+const subscriptionService = new HttpSubscriptionService("http://localhost:3003/api");
+const emailService = new HttpEmailService("http://localhost:3001/api");
 const cachedClient = new RedisCacheWeatherClient(loggedWeatherApiHandler);
 
 const service = new WeatherService(cachedClient, subscriptionService, emailService);
+const router = express.Router();
 const controller = new WeatherController(service);
 
   router.get("/weather", controller.getWeather);

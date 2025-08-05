@@ -7,6 +7,6 @@ RUN npm install
 
 COPY . .
 
-#RUN npm run build
+RUN npm run build
 
-CMD ["npm", "run", "start"]
+CMD ["node", "dist/index.js"]
