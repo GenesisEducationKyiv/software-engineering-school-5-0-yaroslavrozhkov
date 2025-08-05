@@ -19,7 +19,6 @@ export class RedisCacheWeatherClient implements IWeatherApiClient {
     const cached = await redis.get(cacheKey);
 
     if (cached) {
-      console.log("✅ Cache hit");
       return JSON.parse(cached) as Weather;
     }
 
@@ -29,7 +28,6 @@ export class RedisCacheWeatherClient implements IWeatherApiClient {
       await redis.set(cacheKey, JSON.stringify(result), {
         EX: CACHE_TTL,
       });
-      console.log("💾 Cache set");
     }
 
     return result;

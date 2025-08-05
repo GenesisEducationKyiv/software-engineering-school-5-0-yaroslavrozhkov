@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@genesishomework/shared-utils": "file:../../shared-utils",
     "@eslint/js": "^9.28.0",
     "express": "^5.1.0",
     "express-http-proxy": "^2.1.1"

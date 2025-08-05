@@ -1,5 +1,6 @@
 {
     "dependencies": {
+        "@genesishomework/shared-utils": "file:../../shared-utils",
         "amqplib": "^0.10.8",
         "nodemailer": "^7.0.3"
     },

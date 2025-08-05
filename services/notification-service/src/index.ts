@@ -1,6 +1,7 @@
 import { connectRabbitMQ } from './rabbitmq';
 import { startConsumers } from './consumer';
 import { HttpEmailService } from './infrastracture/services/email-service';
+import { logger } from '@genesishomework/shared-utils/src';
 
 async function start() {
   try {
@@ -10,7 +11,7 @@ async function start() {
     
     await startConsumers(emailService);
   } catch (err) {
-    console.error('❌ [Startup] Failed to start service:', err);
+    logger.error('❌ [Startup] Failed to start service:', err);
     process.exit(1);
   }
 }

@@ -8,5 +8,5 @@
       "esModuleInterop": true,
       "strict": true
     },
-    "include": ["index.ts", "src/**/*", "services/**/*","subscription-job.ts", "tests/**/*", "jest.config.ts"],
+    "include": ["index.ts", "src/**/*", "services/**/*",  "shared-utils/**/*","subscription-job.ts", "tests/**/*", "jest.config.ts"],
   }

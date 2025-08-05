@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { logger } from '@genesishomework/shared-utils/src';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.mailtrap.io',
@@ -16,6 +17,6 @@ export async function sendEmail(to: string, subject: string, text: string) {
     subject,
     text,
   });
-
-  console.log(`✅ [Email] Sent message: ${info.messageId}`);
+ 
+  logger.info(`✅ [Email] Sent message: ${info.messageId}`);
 }

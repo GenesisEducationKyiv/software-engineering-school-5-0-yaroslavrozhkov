@@ -1,5 +1,6 @@
 import { INotificationPublisher } from '../../interfaces/notification-publisher.interface';
 import { getRabbitMQChannel } from '../messaging/rabbitmq-connection';
+import { logger, messageProcessedCounter, sampleLog } from '@genesishomework/shared-utils/src';
 import type { Channel } from 'amqplib';
 
 export class RabbitMQNotificationPublisher implements INotificationPublisher {
@@ -19,17 +20,23 @@ export class RabbitMQNotificationPublisher implements INotificationPublisher {
       },
     };
 
-    const published = channel.publish(
+    try{
+    channel.publish(
       this.exchange,
       this.routingKey,
       Buffer.from(JSON.stringify(payload)),
       { persistent: true }
     );
+    
+    messageProcessedCounter.inc();
 
-    if (!published) {
-      console.warn('⚠️ Message was not sent immediately, buffering');
+    if (sampleLog(0.1)) {
+        logger.info({ email, subject }, `📤 [Publisher] Alert sent to queue for ${email}`);
+      }
+
+    } catch (err) {
+        logger.error({ err }, '⚠️ Message was not sent immediately, buffering');
+    
     }
-
-    console.log(`📤 [Publisher] Alert sent to queue for ${email}`);
   }
 }
