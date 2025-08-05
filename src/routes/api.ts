@@ -10,6 +10,7 @@ import { OpenWeatherClient } from "../infrastructure/weather-provider/open-weath
 import { OpenWeatherApiUrlBuilder } from "../infrastructure/helper/open-weather-api-url-builder";
 import { LoggingWeatherHandlerDecorator } from "../infrastructure/logging/logging-provider";
 import { fileLogger } from '../infrastructure/logging/file-logger';
+import { RedisCacheWeatherClient } from "../infrastructure/helper/redis-cache-weather-client";
 
 const router = express.Router();
 
@@ -32,10 +33,12 @@ const loggedOpenWeatherHandler = new LoggingWeatherHandlerDecorator(openWeatherH
   
 loggedWeatherApiHandler.setNext(loggedOpenWeatherHandler);
 
+const cachedClient = new RedisCacheWeatherClient(loggedWeatherApiHandler);
+
 const emailService = new EmailService();
 
 const subscriptionRepo = new PrismaSubscriptionRepository();
-const service = new WeatherService(loggedWeatherApiHandler, subscriptionRepo, emailService);
+const service = new WeatherService(cachedClient, subscriptionRepo, emailService);
 const controller = new WeatherController(service);
 
 router.get("/weather", controller.getWeather);
