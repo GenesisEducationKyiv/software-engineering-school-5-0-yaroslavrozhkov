@@ -13,7 +13,7 @@ export default tseslint.config(
     }
   },
   {
-      ignores: ['eslint.config.mjs', 'public/**', 'subscription-job.ts'],
+      ignores: ['eslint.config.mjs', 'public/**', 'subscription-job.ts', 'coverage/**'],
   },
   {
     rules: {
