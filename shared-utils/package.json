@@ -1,0 +1,14 @@
+{
+    "name": "@genesishomework/shared-utils",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+      "build": "tsc"
+    },
+    "dependencies": {
+      "pino": "^8.0.0",
+      "pino-pretty": "^9.0.0",
+      "prom-client": "^14.0.0"
+    }
+  }

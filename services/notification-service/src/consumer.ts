@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { getChannel } from './rabbitmq';
 import { IEmailService } from './interfaces/email-service.interface';
+import { logger, sampleLog } from '@genesishomework/shared-utils/src';
 
 export async function startConsumers(emailService: IEmailService): Promise<void> {
   try {
@@ -16,29 +17,30 @@ export async function startConsumers(emailService: IEmailService): Promise<void>
     await channel.assertQueue(queue, { durable: true });
     await channel.bindQueue(queue, exchange, routingKey);
 
-    console.log(`📬 [Consumer] Waiting for messages on queue "${queue}"...`);
+    if (sampleLog(0.1)) {
+        logger.info(`[Consumer] Waiting for messages on queue "${queue}"...`);
+      }
 
     await channel.consume(queue, async (msg) => {
       if (!msg) {
-        console.warn('⚠️ [Consumer] Received null or undefined message');
+        logger.warn('[Consumer] Received null or undefined message');
         return;
       }
 
       try {
         const payload = JSON.parse(msg.content.toString());
         const { email, subject, message } = payload.data;
-
-        console.log(`📨 [Consumer] Received alert for ${email}`);
+        
         await emailService.send(email, subject, message);
 
         channel.ack(msg);
       } catch (err) {
-        console.error('❌ [Consumer] Failed to process message:', err);
+        logger.error('❌ [Consumer] Failed to process message:', err);
         channel.nack(msg, false, false);
       }
     });
   } catch (err) {
-    console.error('❌ [Consumer] Failed to start consumers:', err);
+    logger.error('❌ [Consumer] Failed to start consumers:', err);
     throw err;
   }
 }

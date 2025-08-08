@@ -1,4 +1,5 @@
 import { connect, Channel } from 'amqplib';
+import { logger } from '@genesishomework/shared-utils/src';
 
 let channel: Channel;
 
@@ -8,12 +9,11 @@ export async function connectRabbitMQ(): Promise<Channel> {
   try {
     connection = await connect(url);
   } catch (error) {
-    console.error('❌ Failed to connect to RabbitMQ:', error);
+    logger.error('❌ Failed to connect to RabbitMQ:', error);
     throw error;
   }
   channel = await connection.createChannel();
-
-  console.log('🐰 [RabbitMQ] Connected');
+  logger.info('✅ Connected to RabbitMQ');
   return channel;
 }
 

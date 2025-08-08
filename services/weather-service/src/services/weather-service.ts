@@ -1,17 +1,17 @@
 import { IWeatherService } from "../interfaces/weather-service.interface";
 import { IWeatherApiClient } from "../interfaces/weather-api-client.interface";
 import { ISubscriptionService } from "../interfaces/subscription-service.interface";
+import { INotificationPublisher } from "../interfaces/notification-publisher.interface";
 import { Weather } from "../models/types";
 
 import { v4 as uuidv4 } from "uuid";
-import { IEmailService } from "../interfaces/email-service.interface";
 import { WeatherNotFoundError } from "../domain/errors";
 
 export class WeatherService implements IWeatherService {
   constructor(
     private weatherApiClient: IWeatherApiClient,
     private subscriptionService: ISubscriptionService,
-    private emailService: IEmailService
+    private notificationPublisher: INotificationPublisher
   ) {}
 
   async getWeather(city: string): Promise<Weather> {
@@ -48,13 +48,13 @@ export class WeatherService implements IWeatherService {
     const token = uuidv4();
     await this.subscriptionService.create(email, city, frequencyValue, token);
 
-    await this.emailService.send(
+    await this.notificationPublisher.publishWeatherAlert(
       email,
       "Weather Update : Confirmation token",
-      `<p>Use this token to confirm Your subscribe ${token}</p>`
+      `<p>Use this token to confirm your subscription: <strong>${token}</strong></p>`
     );
 
-    console.log(`Send confirmation email with token: ${token}`);
+    console.log(`📨 Published weather alert message with token: ${token}`);
   }
 
   async confirmSubscription(token: string): Promise<void> {

@@ -1,5 +1,6 @@
 import express, { RequestHandler } from 'express';
 import proxy from 'express-http-proxy';
+import { logger } from '@genesishomework/shared-utils/src';
 
 const app = express();
 
@@ -14,5 +15,5 @@ app.use('/weather', weatherProxy);
 app.use('/email', emailProxy);
 
 app.listen(PORT, () => {
-  console.log(`API Gateway running on port ${PORT}`);
+  logger.info(`API Gateway running on port ${PORT}`);
 });

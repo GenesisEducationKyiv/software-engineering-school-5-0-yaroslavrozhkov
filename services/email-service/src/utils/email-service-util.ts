@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { logger, sampleLog } from '@genesishomework/shared-utils/src';
 
 const transporter = nodemailer.createTransport({
   service: "SendGrid",
@@ -20,9 +21,11 @@ export async function sendEmail(to: string, subject: string, html: string): Prom
         html,
       });
   
-      console.log(`Email sent to ${to}. Message ID: ${info.messageId}`);
+      if (sampleLog(0.1)) {
+        logger.info(`Email sent to ${to}. Message ID: ${info.messageId}`);
+      }
     } catch (error) {
-      console.error(`Failed to send email to ${to}:`, error);
+      logger.error(`Failed to send email to ${to}:`, error);
       throw new Error("Email sending failed");
     }
 }
