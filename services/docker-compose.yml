@@ -6,9 +6,9 @@ services:
     container_name: weather_service_postgres
     restart: always
     environment:
-      POSTGRES_USER: youruser
-      POSTGRES_PASSWORD: yourpassword
-      POSTGRES_DB: yourdb
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
@@ -21,6 +21,17 @@ services:
     ports:
       - "6379:6379"
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+
   weather-service:
     build: ./weather-service
     container_name: weather_service
@@ -29,6 +40,7 @@ services:
     environment:
       REDIS_URL: redis://redis:6379
       WEATHER_API_KEY: ${WEATHER_API_KEY}
+      RABBITMQ_URL: amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672
     ports:
       - "3002:3002"
 
@@ -38,6 +50,7 @@ services:
     environment:
       EMAIL_API_KEY: ${EMAIL_API_KEY}
       EMAIL_SENDER: ${EMAIL_SENDER}
+      RABBITMQ_URL: amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672
     ports:
       - "3001:3001"
 
@@ -47,9 +60,20 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgresql://youruser:yourpassword@postgres:5432/yourdb
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
     ports:
       - "3003:3003"
+
+  notification-service:
+    build: ./notification-service
+    container_name: notification_service
+    depends_on:
+      - rabbitmq
+      - email-service
+    environment:
+      RABBITMQ_URL: amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672
+    ports:
+      - "3004:3004"
 
   api-gateway:
     build: ./api-gateway
